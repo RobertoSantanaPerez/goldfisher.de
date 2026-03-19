@@ -1,0 +1,46 @@
+---
+- hosts: all
+  become: true
+  gather_facts: yes
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+    - name: Update
+      apt:
+        update_cache: yes
+
+    - name: Upgrade
+      apt: upgrade=dist force_apt_get=yes
+
+    - name: Install
+      apt:
+        pkg: [
+          "apt-utils", "net-tools", "rsync", "inetutils-ping", "ssh", "nginx",
+          "supervisor", "memcached", "python3-pip", "python3-venv", "default-mysql-server",
+          "python3-dev", "default-libmysqlclient-dev", "build-essential"
+        ]
+
+    - name: public key
+      ansible.posix.authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file', '/home/kolyma/.ssh/no-pwd-ssh.pub') }}"
+
+    - name: sshd-config
+      ansible.builtin.replace:
+        path: /etc/ssh/sshd_config
+        regexp: '#PermitRootLogin prohibit-password'
+        replace: 'PermitRootLogin prohibit-password'
+
+    - name: python auf python3 legen
+      file:
+        src: /usr/bin/python3
+        dest: /usr/bin/python
+        state: link
+
+    - name: Backupdir anlegen
+      shell: mkdir -p /private-backup/server/local/
+
+# end-of-file

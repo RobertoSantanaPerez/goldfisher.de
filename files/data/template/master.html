@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="{{language}}">
+    <head>
+        <script>
+            const config = function() {
+                return({
+                    "timeout_refresh" : {{timeout_refresh}},        
+                });                
+            };
+
+            let stash = {
+                "onload_subs" : [],
+                "timeout_id"  : "",
+            };
+        </script>            
+        <meta charset="{{charset}}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <link rel="icon" type="image/ico" href="{{web}}/favicon.ico?_={{timestamp}}">
+        <link rel="shortcut icon" href="{{web}}/favicon.ico?_={{timestamp}}" type="image/ico">
+        <link rel="canonical" href="{{web}}{{canonical}}">
+        <title>{{title}}</title>
+        <meta property="og:title" content="{{title}}">
+        <meta name="description" content="{{description}}">
+        <meta property="og:description" content="{{description}}">    
+        <meta property="og:url" content="{{web}}{{canonical}}">
+        <meta property="og:type" content="website">
+        {% if image %}<meta property="og:image" content="{{image}}">{% endif %}
+        <link href="{{web}}/css/bootstrap.min.css?_={{timestamp}}" rel="stylesheet">
+        <link href="{{web}}/css/bootstrap-icons.css?_={{timestamp}}" rel="stylesheet">
+        <link href="{{web}}/css/flatpickr.min.css?_={{timestamp}}" rel="stylesheet">
+        <link href="{{web}}/css/master.css?_={{timestamp}}" rel="stylesheet">                
+        {% block headlines %}{% endblock %}
+    </head>
+    <body>                    
+        {% include "master/nav.html" %}
+        {% include "master/day-modal.html" %}
+        {% include "master/week-modal.html" %}
+        {% include "master/register-modal.html" %}
+        {% block header %}{% endblock %}
+        {% block content %}{% endblock %}
+        {% if test %}
+            <script src="{{web}}/jss/bootstrap.bundle.min.js?_={{timestamp}}"></script>
+            <script src="{{web}}/jss/flatpickr.min.js?_={{timestamp}}"></script>
+            <script src="{{web}}/jss/sprintf.min.js?_={{timestamp}}"></script>
+            <script src="{{web}}/jss/plotly.min.js?_={{timestamp}}"></script>
+            <script src="{{web}}/jss/ajv.bundle.js?_={{timestamp}}"></script>
+            <script src="{{web}}/jss/htmx.min.js?_={{timestamp}}"></script>
+            <script src="{{web}}/jss/master.js?_={{timestamp}}"></script>            
+        {% else %}
+            <script src="{{web}}/jss/pack.js?_={{timestamp}}"></script>
+        {% endif %}
+        {% block javascript %}{% endblock %}               
+    </body>
+</html>

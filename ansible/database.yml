@@ -1,0 +1,18 @@
+- hosts: "{{host_list}}"  
+  vars:
+    ansible_python_interpreter: /home/kolyma/Workspace/goldfisher.de/files/venv/bin/python3
+  become: yes
+  tasks:
+    - name: MySQL-Benutzer erstellen
+      community.mysql.mysql_user:
+        name: "gold"
+        password: "rodengold"
+        priv: "gold.*:ALL"
+        host: "%"
+        state: present
+        login_user: root
+        login_password: ""
+    - name: Datenbank anlegen
+      shell: mysql -u gold -prodengold < /home/kolyma/Workspace/goldfisher.de/files/conf/create-goldfisher.de.sql
+
+# end-of-file

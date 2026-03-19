@@ -1,0 +1,87 @@
+{% extends 'master.html' %}
+
+{% set canonical='/' %}
+{% set image='' %}
+{% set title='Dashboard' %}
+{% set description='Dashboard' %}
+
+{% block content %}
+<style>
+    .btn {
+        --bs-btn-padding-y: .10rem!important; 
+        --bs-btn-padding-x: .5rem!important; 
+        --bs-btn-font-size: .75rem!important;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 col-xxl-2 mydiv">
+            <div class="container-fluid">
+                <div class="row">     
+                    <div class="col-12 mybox">
+                        <div id="goldprice" width="100%" height="180px" style="width:100%; height:180px;"></div>                        
+                        <div>current-price:&nbsp;<span id="gold-price"></span>&nbsp;$</div>
+                        <a href="{{web}}/srv/gold/current/?_={{timestamp}}" class="btn btn-primary float-end">Big Diagram</a>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+        {%for m in list_materials%}
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 col-xxl-2 mydiv">
+                <div class="container-fluid">
+                    <div class="row">     
+                        <div class="col-12 mybox">
+                            <div id="price_{{m}}" width="100%" height="180px" style="width:100%; height:180px;"></div>                        
+                            <div>current-price:&nbsp;<span id="variety_{{m}}_current"></span>&nbsp;$</div>
+                            <!--<a href="{{web}}/srv/variety/current/{{m}}/?_={{timestamp}}" class="btn btn-secondary float-end">Big Diagram</span>-->
+                            <span class="btn btn-secondary float-end">Big Diagram</span>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        {%endfor%}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script src="{{web}}/jss/gold-price-day.js"></script>
+<script src="{{web}}/jss/variety-price-day.js"></script>
+<script>    
+    function gold_current() {
+        fetch( "{{web}}/srv/gold/current/",  { 
+            method: "GET", 
+            headers: { 
+                "Accept": "application/json",
+                "Content-Type": "application/json"} 
+        } )
+        .then( (response) => response.json() )
+        .then( function(json) { gold_price_present_dia(json) } )
+        .catch(error => console.error("Fehler 'day_prices' beim Laden:", error));                    
+    }//gold_current
+    
+    function variety_current() {                
+        for (let material  of {{list_materials|tojson}}) {
+            fetch( sprintf("{{web}}/srv/variety/current/%s/", material),  { 
+                method: "GET", 
+                headers: { 
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"} 
+            } )
+            .then( (response) => response.json() )
+            .then( function(json) { variety_price_present_dia(json, material) } )
+            .catch(error => console.error("Fehler 'variety day_prices' beim Laden:", error));                
+        }
+    }//variety_current
+    
+
+    function present_current() {
+        gold_current();
+        variety_current();
+        stash["timeout_id"] = window.setTimeout(present_current, config()["timeout_refresh"])
+    }
+    present_current();
+</script>
+{% endblock %}

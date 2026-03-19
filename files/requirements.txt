@@ -1,0 +1,15 @@
+flask
+pdfkit
+plotly
+kaleido
+htmlmin
+captcha
+gunicorn
+requests
+werkzeug
+jsonschema
+matplotlib
+flask_httpauth
+beautifulsoup4
+mysqlclient
+mysql-connector-python

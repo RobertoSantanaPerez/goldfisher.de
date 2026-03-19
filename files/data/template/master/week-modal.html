@@ -1,0 +1,83 @@
+<!-- Modal -->
+<div class="modal fade" id="week-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Kalenderwoche auswählen</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <div class="row" style="padding-bottom: 10px;">        
+                <div class="col-12">
+                  <div class="container">                  
+                    <div class="input-group">
+                      <span class="input-group-text">📅</span>
+                      <input id="weekpicker" type="text" class="form-control" placeholder="KW auswählen">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <div class="row">        
+                <div class="col-6">
+                  <div class="input-group">
+                      <span class="input-group-text">Year</span>
+                      <input id="year" type="text" class="form-control" placeholder="Kalenderjahr">
+                    </div>
+                </div>
+                <div class="col-6">
+                  <div class="input-group">
+                      <span class="input-group-text">Week</span>
+                      <input id="week" type="text" class="form-control" placeholder="Kalenderwoche">
+                    </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">        
+          <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button id="load-week" type="button" class="btn btn-primary" data-bs-dismiss="modal">Load</button>        
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script>
+
+stash["onload_subs"].push(function () {
+  flatpickr("#weekpicker", {
+      weekNumbers: true,
+      locale: "de",
+
+      onChange: function(selectedDates, dateStr, instance) {
+          if (!selectedDates.length) return;
+          const d = new Date(
+            Date.UTC(
+              selectedDates[0].getFullYear(), 
+              selectedDates[0].getMonth(), 
+              selectedDates[0].getDate()
+            )
+          );
+          const dayNum = d.getUTCDay() || 7;   // Sonntag = 7
+          d.setUTCDate(d.getUTCDate() + 4 - dayNum); // Donnerstag der Woche
+          const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+          const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7); 
+          document.querySelector("#year").value = d.getUTCFullYear();
+          document.querySelector("#week").value = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+          instance.redraw();
+      }
+  })
+});
+
+document.querySelector("#load-week").addEventListener("click", function() {
+  url = sprintf(
+    "{{web}}/srv/gold/week/%s/%s/",
+    document.querySelector("#year").value,
+    document.querySelector("#week").value
+  );
+  document.querySelector("#year").value = "";
+  document.querySelector("#week").value = "";
+  location.replace(url)
+});
+</script>

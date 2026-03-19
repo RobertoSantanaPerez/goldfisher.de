@@ -1,0 +1,26 @@
+body { background-color: black; color: #efefef; }
+h1, h2 { color: black; }
+h1 { font-size: 24px; }
+h2 { font-size: 20px; }
+h3 { font-size: 18px; }
+h4 { font-size: 14px; }
+.mybox { background-color: #333333; color: #cfcfcf; border-radius: 6px; padding: 10px; }
+.mydiv { padding-bottom: 10px; }
+.form-label { font-weight: bold; }
+.list_anchor {
+    color: white; 
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;    
+}
+
+.error-red { border-color: red; }
+
+.flatpickr-day.in-week {
+    background: #0d6efd33; /* Bootstrap Primärfarbe leicht transparent */
+    border-radius: 0 !important;
+}
+.flatpickr-day.selected.in-week {
+    background: #0d6efd; /* Primärfarbe komplett */
+    color: white;
+}

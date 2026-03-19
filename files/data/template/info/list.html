@@ -1,0 +1,28 @@
+<div id="list" class="card text-center">
+    <div class="card-header">
+        <h2>Informationen</h2>        
+    </div>
+    <div class="card-body text-start" style="overflow: scroll;">
+        {% for i in info_list %}
+            <a href="{{i.url}}" target="_blank" title="show" class="list_anchor">&#128065;</a>&nbsp;
+            <a hx-delete="{{web}}/srv/info/{{i.id}}/" hx-target="#list" title="Delete" class="list_anchor">&#128465;</a>&nbsp;
+            <a class="list_anchor">&#128296;</a>
+            {{i.day}} {{i.clock}}: {{i.title}}<br>
+        {% endfor %}        
+    </div>
+    <div class="card-footer text-body-secondary text-end">
+        <button href="#" class="btn btn-primary float-end"
+            data-bs-toggle="modal" data-bs-target="#mask-modal">
+            Neu
+        </button>        
+        <button id="list-submit"
+        hx-get="{{web}}/srv/info/list/"
+        hx-trigger="click"
+        hx-target="#list"
+        hx-swap="outerHTML"
+        style="margin-right:10px;"
+        class="btn btn-primary float-end">
+        &#x21BB;
+        </button>
+    </div>
+</div>

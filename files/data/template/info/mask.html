@@ -1,0 +1,84 @@
+<div id="htmx-mask" style="color:#373737;" class="modal fade" id="mask-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form name="input-form" onsubmit="return false;" hx-put="{{web}}/srv/info/" hx-target="#htmx_mask">    
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {% if info_id %}
+                        <h2>Eintrag ändern</h2>
+                    {% else %}
+                        <h2>Eintrag hinzufügen</h2>
+                    {% endif %}
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">                
+                    <div class="text-start">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input id="title" name="title" value="{{title}}" type="text" class="form-control" aria-describedby="Titel auf der Website">
+                        </div>
+                        <div class="mb-3">
+                            <label for="url" class="form-label">URL</label>
+                            <input id="url" name="url" value="{{url}}" type="text" class="form-control" aria-describedby="URL der Website">
+                        </div>
+                        <div class="mb-3">
+                            <label for="comment" class="form-label">Inhalt</label>
+                    
+                            <textarea id="comment" name="comment" type="text" class="form-control" aria-describedby="Inhalt der Website">{{comment}}</textarea>
+                        </div>    
+                    </div>                    
+                </div>                
+                <div class="modal-footer">
+                    <input name="id" value="{{id}}" type="hidden" class="form-control">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>                    
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    {%if refresh_list%} document.getElementById("list-submit").click(); {%endif%}
+    stash["onload_subs"].push(function () {
+        const eingabe_schema = {{mask_schema | tojson}};
+        const eingabe_form = "input-form";
+
+        document.querySelector(sprintf("form[name='%s']", eingabe_form))
+            .addEventListener("click", function (e) {
+                if (e.target.matches("input, textarea")) {
+                    document.querySelector(sprintf(
+                        "form[name='%s'] :is(input, textarea)[name='%s']", 
+                        eingabe_form, e.target.name
+                    )).classList.remove("error-red");
+                }
+        });
+
+        document.querySelector(sprintf("form[name=%s]", eingabe_form))
+            .addEventListener("htmx:beforeRequest", function (e) {                        
+                let data = {};
+                for (let element in eingabe_schema.data.properties) {
+                    const selector = sprintf(
+                        "form[name='%s'] :is(input, textarea)[name='%s']",
+                        eingabe_form, element
+                    );
+                    const el = document.querySelector(selector);
+                    let value = el ? el.value.trim() : undefined;
+                    data[element] = value;                    
+                }
+                const ajv = new Ajv({ allErrors: true, strict: false });
+                const validate = ajv.compile(eingabe_schema["data"]);        
+                const valid = validate(data);
+                if ( !valid ) {
+                    for( err in validate.errors ){
+                        element = validate.errors[err]["instancePath"].substr(1);
+                        const selector = sprintf(
+                            "form[name='%s'] :is(input, textarea)[name='%s']",
+                             eingabe_form, element
+                        );
+                        document.querySelector( selector ).classList.add("error-red");                        
+                    }
+                    e.preventDefault(); 
+                }        
+        });
+    });
+</script>

@@ -1,0 +1,62 @@
+{% extends 'master.html' %}
+
+{% set canonical='/' %}
+{% set image='' %}
+{% set title='gold price for one week' %}
+{% set description='' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 col-xxl-2  mybox">
+            <div class="container-fluid">                
+                <div class="row">
+                    <div class="col-12">
+                        <span><b>information</b></span>
+                        <div class="input-group input-group-sm mb-3">                            
+                            <input id="info" type="text" class="form-control" title="info" placeholder="keine info" aria-label="info" aria-describedby="basic-addon2" readonly>
+                        </div>        
+                    </div>        
+                    <div class="col-12 text-center">
+                        <button id="btn-2d" class="btn btn-primary" disabled>Ansicht in 2d</button>
+                        <button id="btn-3d" class="btn btn-primary" disabled>Ansicht in 3d</button>
+                    </div>        
+                </div>
+            </div>
+        </div>        
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-10 col-xxl-10">
+            <div class="container-fluid">
+                <div class="row">     
+                    <div class="col-12 mybox">
+                        <div id="goldprice-2d" width="100%" height=600 style="width:100%; height:600px;"></div>
+                        <div id="goldprice-3d" width="100%" height=600 style="width:100%; height:600px;" hidden></div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+
+{% endblock %}
+{% block javascript %}
+<script src="{{web}}/jss/gold-price-week.js"></script>
+<script>
+
+    stash["onload_subs"].push(function () {        
+
+        document.querySelector("#info").value = "loading...";
+        fetch( "{{web}}/srv/gold/week/{{year}}/{{week}}/", { 
+            method: "GET", 
+            headers: { 
+                "Accept": "application/json",
+                "Content-Type": "application/json"} 
+        } )
+        .then( (response) => response.json() )
+        .then( function(json) { 
+            gold_price_present_init(json);
+            document.querySelector("#info").value = "data complete";
+        } )
+        .catch(error => console.error("Fehler 'gold-price-week' beim Laden:", error));                        
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "title"   : { "type": "string", "minLength": 1, "maxLength": 255 },
+    "url"     : { "type": "string", "minLength": 1, "maxLength": 255 },
+    "comment" : { "type": "string", "minLength": 0 }
+  },
+  "required": ["title", "url"]
+}

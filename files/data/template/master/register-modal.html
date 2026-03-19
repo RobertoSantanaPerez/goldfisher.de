@@ -1,0 +1,58 @@
+<!-- Modal -->
+<div class="modal fade" id="register-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form>
+    <div class="modal-dialog">
+      <div class="modal-content" style="background-color: #dfdfdf !important;">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Registration</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body"  style="background-color: #efefef !important;">
+          <div class="container">
+            <div class="row">                          
+              <div class="input-group" style="padding-bottom:10px;">
+                <div class="col-3" style="padding-right:10px;">
+                <span class="input-group-text">Name:</span>
+                </div>
+                <div class="col-9">
+                  <input id="modal-uid" class="form-control" placeholder="your name">
+                </div>
+              </div>
+              <div class="input-group" style="padding-bottom:10px;">
+                <div class="col-3" style="padding-right:10px;">
+                  <span class="input-group-text">E-Mail:</span>
+                </div>
+                <div class="col-9">
+                  <input id="modal-email" class="form-control" placeholder="info@domain.tld">
+                </div>
+              </div>              
+              <div class="input-group"  style="padding-bottom:10px;">
+                <div class="col-3" style="padding-right:10px;">
+                  <span class="input-group-text">Password:</span>
+                </div>
+                <div class="col-9">
+                  <input id="modal-pwd" class="form-control" type="password" placeholder="your password">
+                </div>              
+              </div>
+              <div class="input-group">
+                <div class="col-3" style="padding-right:10px;">
+                  <span class="input-group-text">Captcha:</span>
+                </div>
+                <div class="col-5" style="padding-right:10px;">
+                  <img src="{{web}}/captcha/?_={{timestamp}}" class="img-fluid">
+                </div>
+                <div class="col-4">
+                  <input id="modal-captcha" class="form-control" type="text" placeholder="insert text">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="" class="btn btn-primary" data-bs-dismiss="modal">Save</button> 
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

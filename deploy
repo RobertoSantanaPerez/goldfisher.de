@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source venv/bin/activate
+
+flask --app app run --debug
+
+### end-of-file

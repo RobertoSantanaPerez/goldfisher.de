@@ -1,0 +1,23 @@
+{% extends 'master.html' %}
+
+{% set canonical='/' %}
+{% set image='' %}
+{% set title='gold' %}
+{% set description='Info' %}
+
+{% block headlines %}{% endblock %}
+
+{% block content %}
+    {% include "info/mask.html" %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                {% include "info/list.html" %}
+            </div>            
+        </div>
+    </div>    
+{% endblock %}
+
+{% block javascript %}
+<script src="{{web}}/jss/info.js?_={{timestamp}}"></script>
+{% endblock %}

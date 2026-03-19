@@ -1,0 +1,101 @@
+---
+- hosts: "{{ host_list }}"
+  vars:
+    project: "goldfisher.de"
+    remoteuser: kolyma
+    gather_facts: yes
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+
+    - name: Project-Dir anlegen
+      file:
+        path: "/home/{{ remoteuser }}/Workspace/{{ project }}"
+        state: directory
+
+    - name: Project-Dir sichern
+      shell: cd /home/{{ remoteuser }}/Workspace && tar cfzv "/private-backup/server/local/{{ project }}_$(date +"%Y-%m-%d_%I-%M-%S").tar.gz" "{{ project }}"
+
+
+    - name: log-dir anlegen
+      file:
+        path: "/home/{{ remoteuser }}/{{ item }}"
+        state: directory
+      with_items:
+        - logs        
+        - "logs/{{project}}"
+        - data
+        - "data/{{project}}"
+        - tmp
+        - "tmp/{{project}}"
+    
+    - name: Dirs/Files syncen
+      synchronize:
+        src: "{{ item }}"
+        dest: "/home/{{ remoteuser }}/Workspace/{{ project }}/files"
+        recursive: yes
+        owner: yes
+        group: yes
+      with_items:
+        - lib
+        - srv
+        - data
+        - docs
+        - conf
+        - requirements.txt
+        - requirements.sh                  
+        - update.py
+        - client.py
+        - price.py
+        - app.py         
+
+    - name: admin.sh syncen
+      synchronize:
+        src: "../{{ item }}"
+        dest: "/home/{{ remoteuser }}/Workspace/{{ project }}"
+        recursive: yes
+        owner: yes
+        group: yes
+      with_items:        
+        - admin.sh
+
+    - name: venv anlegen
+      shell: "cd /home/{{ remoteuser }}/Workspace/{{ project }}/files && python -m venv venv"
+    
+    - name: python module installieren
+      shell: "/home/{{ remoteuser }}/Workspace/{{project}}/files/requirements.sh"
+
+    - name: Create a symbolic link
+      file:
+        src: "/home/{{remoteuser}}/Workspace/{{project}}/files/conf/supervisor.conf"
+        dest: /etc/supervisor/conf.d/goldfisher.de.conf
+        state: link
+
+    - name: Create a symbolic link
+      file:
+        src: "/home/{{remoteuser}}/Workspace/{{project}}/files/conf/{{host_list}}.nginx.conf"
+        dest: "/etc/nginx/sites-enabled/goldfisher.de.conf"
+        state: link        
+
+    - name: restart services
+      shell: systemctl restart "{{item}}"
+      with_items:
+        - supervisor
+        - memcached
+        - nginx
+
+    - name: crontab anpassen
+      lineinfile:
+        path: /etc/crontab
+        line: "{{item}}"
+        state: present
+        create: yes
+        backup: yes
+      with_items:
+        - "* * * * * root cd /home/kolyma/Workspace/goldfisher.de && ./admin.sh update -g && ./admin.sh price"
+        - "0,5,10,15,20,25,30,35,40,45,50,55 * * * * root cd /home/kolyma/Workspace/goldfisher.de && ./admin.sh update -v"
+        - "0 12 * * * root cd /Workspace/goldfisher.de && ./admin.sh update -r"
+        - "# end-of-file:"
+        
+
+# end-of-file

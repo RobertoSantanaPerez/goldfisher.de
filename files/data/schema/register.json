@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "uid"      : { "type": "string", "minLength": 1, "maxLength": 64 },
+    "email"    : { "type": "string", "minLength": 1, "maxLength": 255 },
+    "password" : { "type": "string", "minLength": 1, "maxLength": 64 }
+  },
+  "required": ["uid", "email", "password"]
+}
