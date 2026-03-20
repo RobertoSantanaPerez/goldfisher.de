@@ -1,12 +1,13 @@
 {% extends 'master.html' %}
 
-{% set canonical='/' %}
+{% set canonical='' %}
+{% set robots='noindex,nofollow' %}
 {% set image='' %}
 {% set title='gold' %}
 {% set description='Error' %}
 
 {% block content %}
-    <h1>{{error}} {{errorstr}}</h1>
+<h1>{{error}} {{errorstr}}</h1>
 {% endblock %}
 
 {% block javascript %}{% endblock %}

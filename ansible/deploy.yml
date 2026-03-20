@@ -47,7 +47,8 @@
         - update.py
         - client.py
         - price.py
-        - app.py         
+        - app.py  
+        - app.sh       
 
     - name: admin.sh syncen
       synchronize:

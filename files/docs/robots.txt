@@ -1,0 +1,8 @@
+# begin-of-file
+User-agent: *
+Disallow: /impress/
+Disallow: /privacy/
+Disallow: /captcha/
+Disallow: /tac/
+Sitemap: https://goldfisher.de/sitemap.txt
+# end-of-file
