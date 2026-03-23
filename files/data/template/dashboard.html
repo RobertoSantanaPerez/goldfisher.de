@@ -65,9 +65,9 @@
             .catch(error => console.error("Fehler 'day_prices' beim Laden:", error));
     }//gold_current
 
-    function variety_current() {
-        for (let material of {{ list_materials | tojson }
-    }) {
+    function variety_current() { 
+	    for (let material of {{list_materials | tojson}}
+    	) {
         fetch(sprintf("{{web}}/srv/variety/current/%s/", material), {
             method: "GET",
             headers: {
