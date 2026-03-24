@@ -30,17 +30,18 @@ class Client( lib.MySQL.Mysql ):
         return
 
     def list_clients( self ):
-        self.cursor.execute(
-            "SELECT id, uid, email, level FROM client"            
-        )        
-        #rows = self.cursor.fetchall()
         list = []
+        self.cursor.execute(
+            "SELECT id, uid, email, level, limitbuy, limitsell FROM client"            
+        )                
         for row in self.cursor.fetchall():          
             list.append({
-                "id"    : row[0],
-                "uid"   : row[1],
-                "email" : row[2],
-                "level" : row[3],
+                "id"        : row[0],
+                "uid"       : row[1],
+                "email"     : row[2],
+                "level"     : row[3],
+                "limitbuy"  : row[4],
+                "limitsell" : row[5]
             })
         return( list )
 

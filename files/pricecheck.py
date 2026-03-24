@@ -12,14 +12,15 @@ class SendInfo():
         ( self.current_price, self.last_price ) = lib.Gold.Gold().get_current_last_price()
         self.clients = lib.Client.Client().list_clients()
         self.Email = lib.Shipping.SMTP()
+        print("PRICECHECK:", self.current_price)
 
     def send_sell_info( self ):
-        for client in self.clients:
+        for client in self.clients:            
             if( int(client["level"]) > 20 and
-                float(self.last_price) <= float(threshold_for_sell) and 
-                float(self.current_price) > float(threshold_for_sell)
+                float(self.last_price) <= float(client["limitsell"]) and 
+                float(self.current_price) > float(client["limitsell"])
             ):
-                print("Info SELL", client["uid"], self.current_price)
+                print("Info SELL:", client["uid"], client["limitsell"], self.current_price)
                 self.Email.send({
                     "to"      : client["email"], 
                     "subject" : "Info SELL: current price '{}$'".format(self.current_price),
@@ -27,13 +28,12 @@ class SendInfo():
                 })
 
     def send_buy_info( self ):
-        for client in self.clients:
+        for client in self.clients:            
             if( int(client["level"]) > 20 and
-               float(self.last_price) >= float(threshold_for_buy) and
-               float(self.current_price) < float(threshold_for_buy)
+               float(self.last_price) >= float(client["limitbuy"]) and
+               float(self.current_price) < float(client["limitbuy"])
             ):
-                print("Info BUY", client["uid"], self.current_price)
-                
+                print("Info BUY:", client["uid"], client["limitbuy"], self.current_price)                
                 self.Email.send({
                     "to"      : client["email"], 
                     "subject" : "Info BUY: current price '{}$'".format(self.current_price),
