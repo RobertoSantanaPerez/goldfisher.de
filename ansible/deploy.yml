@@ -46,7 +46,7 @@
         - requirements.sh                  
         - update.py
         - client.py
-        - price.py
+        - pricecheck.py
         - app.py  
         - app.sh       
 
@@ -93,9 +93,10 @@
         create: yes
         backup: yes
       with_items:
-        - "* * * * * root cd /home/kolyma/Workspace/goldfisher.de && ./admin.sh update -g && ./admin.sh price"
-        - "0,5,10,15,20,25,30,35,40,45,50,55 * * * * root cd /home/kolyma/Workspace/goldfisher.de && ./admin.sh update -v"
-        - "0 12 * * * root cd /Workspace/goldfisher.de && ./admin.sh update -r"
+        - "* * * * * root cd /home/kolyma/Workspace/goldfisher.de && ./admin.sh update -g  >> /home/kolyma/logs/goldfisher.de/crontab.log 2>&1"
+        - "* * * * * root cd /home/kolyma/Workspace/goldfisher.de && ./admin.sh pricecheck >> /home/kolyma/logs/goldfisher.de/crontab.log 2>&1"
+        - "0,5,10,15,20,25,30,35,40,45,50,55 * * * * root cd /home/kolyma/Workspace/goldfisher.de && ./admin.sh update -v >> /home/kolyma/logs/goldfisher.de/crontab.log 2>&1"
+        - "0 12 * * * root cd /Workspace/goldfisher.de && ./admin.sh update -r >> /home/kolyma/logs/goldfisher.de/crontab.log 2>&1"
         - "# end-of-file:"
         
 

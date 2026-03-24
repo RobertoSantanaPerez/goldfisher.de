@@ -29,8 +29,7 @@ class Variety( lib.MySQL.Mysql ):
             json_data = requests.get('https://data.silv.app/commodities.json')            
             data = json_data.json()
             prices = {}
-            for m in self.get_materials():
-                print(m)
+            for m in self.get_materials():                
                 prices[m] = data["commodities"][m]["price"]   
             return( prices )
         except Exception as e:
