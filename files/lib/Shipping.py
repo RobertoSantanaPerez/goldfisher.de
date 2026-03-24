@@ -95,6 +95,9 @@ class SMTP():
             msg['From'] = self.data["uid"]
             msg['To'] = param["to"]
             msg['Subject'] = param["subject"]
+            msg['X-Priority'] = "1"
+            msg['Importance'] = "High"
+
             msg.set_content(param["body"])
             with smtplib.SMTP_SSL( self.data["host"],  self.data["port"]) as server:
                 server.login(self.data["uid"], self.data["pwd"])
