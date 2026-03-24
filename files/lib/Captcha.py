@@ -10,10 +10,10 @@ import random, string, io, hashlib
 from PIL import Image, ImageDraw, ImageFont
 from flask import g
 
-class Cache():
+class Captcha():
 
     def __init__( self, param ):
-    pass
+        pass
     # end __init__
 
     def set( self )

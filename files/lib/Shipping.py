@@ -16,10 +16,10 @@ def error( msg ):
 class SMS():
     def __init__( self ):
         self.data = {
-            "url"   : config[ "sms_url" ],
-            "id"    : config[ "sms_id" ],
-            "email" : config[ "sms_email" ],
-            "token" : config[ "sms_token" ],
+            "url"   : config["sms"]["url"],
+            "id"    : config["sms"]["id"],
+            "email" : config["sms"]["email"],
+            "token" : config["sms"]["token"],
         }
        
     def ping( self ):
@@ -67,10 +67,10 @@ class SMS():
 class SMTP():
     def __init__( self ):
         self.data = {
-            "host"  : config["smtp_host"],
-            "port"  : config["smtp_port"],
-            "uid"   : config["smtp_uid"],
-            "pwd"   : config["smtp_pwd"],
+            "host"  : config["smtp"]["host"],
+            "port"  : config["smtp"]["port"],
+            "uid"   : config["smtp"]["uid"],
+            "pwd"   : config["smtp"]["pwd"],
         }
 
     def ping( self ):

@@ -2,7 +2,7 @@
 # config.py
 ###########################################################################
 
-import time, os, logging
+import time, os, logging, json
 from logging.handlers import RotatingFileHandler
 
 def log( log_folder ):
@@ -20,6 +20,13 @@ def log( log_folder ):
 
 class Config():
 
+    def server_config( self ):
+        try: 
+            with open("/etc/goldfisher.conf") as file:
+                return( json.load(file) )
+        except Exception as e: print(e)
+        return( False )
+
     def root_dir( self ):
         return( "{}/..".format( os.path.abspath(os.path.dirname(__file__))) )
 
@@ -32,8 +39,7 @@ class Config():
 
     def __is_debug( self ):
         try:
-            if( os.environ.get('DEBUG') ):
-                return( True )
+            if( os.environ.get('DEBUG') ): return( True )
         except: return( False )
 
     def test_data( self ):
@@ -42,6 +48,7 @@ class Config():
         self.data["domain"] = "http://localhost:{}".format(self.data["port"])       
 
     def __init__( self ):
+        server_config = self.server_config()
         self.data = {
             "test"             : False,
             "language"         : "DE",
@@ -62,13 +69,7 @@ class Config():
             "static_folder"    : "{}/docs".format( self.root_dir() ),
             "images_folder"    : "{}/docs/images".format( self.root_dir() ),
             "root_dir"         : self.root_dir(),
-            "domain"           : '',
-            "db"               : {
-                "user"      : "gold", 
-                "password"  : "rodengold",
-                "host"      : "localhost",
-                "database"  : "gold"
-            },
+            "domain"           : '',            
             "level"            : {
                 "blocked"      : "0",
                 "registered"   : "10",
@@ -85,15 +86,9 @@ class Config():
                  "cpi", "fed_funds", "treasury_1y", "treasury_2y", 
                  "treasury_5y", "treasury_10y", "treasury_30y", 
             ],
-            "smtp_host"        : 'smtp.gmail.com',
-            "smtp_port"        : '465',
-            "smtp_uid"         : 'roberto.santana.berlin@gmail.com',
-            "smtp_pwd"         : 'woim qdex xlhe skdg',
-            
-            "sms_url"          : 'https://www.teammessage.de/api/v1',
-            "sms_id"           : 202927,
-            "sms_email"        : 'goldfisher@tmsg.de',
-            "sms_token"        : '3fc398e1acc713116a387298ff03b04ba7c98df88c93f8c9cfbf79c4856649f2',
+            "smtp" : server_config["smtp"],            
+            "sms"  : server_config["sms"],            
+            "db"   : server_config["db"],            
         }
         if( os.environ.get("TEST") != None ): self.test_data()
         self.data["web"] = self.data["domain"]
