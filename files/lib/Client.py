@@ -44,7 +44,24 @@ class Client( lib.MySQL.Mysql ):
                 "limitsell" : row[5]
             })
         return( list )
-
+    
+    def get_client( self, param ):
+        self.cursor.execute(
+            "SELECT id, uid, email, level, limitbuy, limitsell " +
+            " FROM client WHERE uid=%s",
+            [ param["uid"] ]
+        )  
+        if self.cursor.rowcount > 0 :
+            id, uid, email, level, limitbuy, limitsell, = self.cursor.fetchone() 
+            return({
+                "id"        : id,
+                "uid"       : uid,
+                "email"     : email,
+                "level"     : level,
+                "limitbuy"  : limitbuy,
+                "limitsell" : limitsell
+            })
+        else: return( None )
 
     def add_client( self, param ):
         try:

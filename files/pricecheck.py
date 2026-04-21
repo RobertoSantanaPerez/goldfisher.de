@@ -11,7 +11,7 @@ class SendInfo():
     def __init__( self ):
         ( self.current_price, self.last_price ) = lib.Gold.Gold().get_current_last_price()
         self.clients = lib.Client.Client().list_clients()
-        self.Email = lib.Shipping.SMTP()
+        self.Email = lib.Shipping.SMTP()        
         print("PRICECHECK:", self.current_price)
 
     def send_sell_info( self ):

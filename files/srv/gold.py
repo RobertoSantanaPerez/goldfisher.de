@@ -32,6 +32,9 @@ def current():
         return( out.html("gold-price-day") )
     elif "application/json" in lib.Utils.get_accept():
         gold = lib.Gold.Gold()
+
+        gold.get_all_prices_with_timestamp()
+
         price = gold.get_price_current()
         price = price if price != False else "undef"
         (list_price, min, max, average) = gold.get_current_day_prices()        

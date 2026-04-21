@@ -7,6 +7,25 @@ import lib.Output
 
 out = lib.Output.Output()
 
+def format_day( day ):
+  try:
+    (y, m, d) = str(day).split("-")
+    m = m if len(m)>1 else "0{}".format(m)
+    d = d if len(d)>1 else "0{}".format(d)
+    return( "{}-{}-{}".format(y, m,d) )
+  except: print("format_day problems")
+  return( None )
+
+def format_time( tme ):
+  try:
+    (h, m, s) = str(tme).split(":")
+    s = s if len(s)>1 else "0{}".format(s)
+    m = m if len(m)>1 else "0{}".format(m)
+    h = h if len(h)>1 else "0{}".format(h)
+    return( "{}:{}:{}".format(h, m, s) )
+  except: print("format_time problems")
+  return( None )
+
 def get_date_today():
   now = time.localtime()
   mon = now.tm_mon if now.tm_mon>10 else "0{}".format(now.tm_mon)
@@ -69,10 +88,6 @@ def clock_mysql_program( mysql ):
   if len(clock) < 5: 
     clock = "0{}".format(clock)
   return( clock )
-
-def error( str ):
-  print( str )
-  return( False )
 
 def prediction( list ):
   if len( list ) < 2: return( None )

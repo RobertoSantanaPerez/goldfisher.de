@@ -6,7 +6,7 @@ from pathlib import Path
 ausgabe     = ""
 folder      = "{}/jss".format( lib.Config.Config().config()["static_folder"])
 file_list   = [
-    "bootstrap.bundle.min.js",  "flatpickr.min.js", "sprintf.min.js", 
+    "bootstrap.bundle.min.js",  "flatpickr.min.js", "flatpickr-de.js", "sprintf.min.js", 
     "plotly.min.js", "ajv.bundle.js", "htmx.min.js", "master.js", 
 ]
 

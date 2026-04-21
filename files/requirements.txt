@@ -1,4 +1,6 @@
 flask
+numpy
+panda
 pdfkit
 plotly
 kaleido
@@ -7,9 +9,11 @@ captcha
 gunicorn
 requests
 werkzeug
+lightgbm
 jsonschema
 matplotlib
 flask_httpauth
 beautifulsoup4
 mysqlclient
 mysql-connector-python
+scikit-learn

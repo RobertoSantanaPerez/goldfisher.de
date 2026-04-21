@@ -42,16 +42,16 @@ class SMS():
                 error( "Eror: '{}' not defined".format(key) )
                 return( False )
         try:            
-            response = requests.get( "{}/sms/send/".format(self.data["url"]),
+            response = requests.post( "{}/sms/send/".format(self.data["url"]),
                 headers={
-                    "Authorization": self.data["token"]
+                    "Authorization": "Bearer {}".format(self.data["token"])                    
                 },
                 json={
                     "team_id"           : self.data[ "id" ],
                     "teamlist_email"    : self.data[ "email" ],
                     "message"           : param[ "body" ],
                     "to_mobile"         : param[ "to" ],
-                    "test"              : 1
+                    "test"              : 0
                 }
             )                        
 

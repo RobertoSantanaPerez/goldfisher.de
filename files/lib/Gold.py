@@ -101,4 +101,19 @@ class Gold( lib.MySQL.Mysql ):
         day = lib.Utils.get_current_day()
         return( self.get_day_prices(day) )
 
+
+    def get_all_prices_with_timestamp( self ):
+        self.cursor.execute(
+            "SELECT day, clock, price FROM goldapicom "
+            + " ORDER BY day, clock"            
+        )
+        rows = self.cursor.fetchall()
+        erg =  []
+        for row in rows:                      
+            erg.append({            
+                "timestamp" : lib.Utils.format_day(row[0]) + " " + lib.Utils.format_time(row[1]),
+                "price"     : float(row[2])
+            })
+        return(erg)
+
 # end-of-file
