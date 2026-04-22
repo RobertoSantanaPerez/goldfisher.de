@@ -21,7 +21,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" id="load-day" class="btn btn-primary" data-bs-dismiss="modal">Load</button>        
+          <button type="button" id="load-day" class="btn btn-primary">Load</button>        
         </div>
       </div>
     </div>
@@ -40,6 +40,8 @@
       "{{web}}/srv/gold/day/%s/",
       document.querySelector( modal_day ).value
     );
+    document.querySelector( modal_day ).value = "";
+    bootstrap.Modal.getInstance( document.getElementById("day-modal") ).hide();
     location.replace(url);
     return( false )
   });

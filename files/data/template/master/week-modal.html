@@ -37,7 +37,7 @@
         </div>
         <div class="modal-footer">        
           <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button id="load-week" type="button" class="btn btn-primary" data-bs-dismiss="modal">Load</button>        
+          <button id="load-week" type="button" class="btn btn-primary">Load</button>        
         </div>
       </div>
     </div>
@@ -78,6 +78,7 @@ document.querySelector("#load-week").addEventListener("click", function() {
   );
   document.querySelector("#year").value = "";
   document.querySelector("#week").value = "";
+  bootstrap.Modal.getInstance( document.getElementById("week-modal") ).hide();
   location.replace(url)
 });
 </script>
