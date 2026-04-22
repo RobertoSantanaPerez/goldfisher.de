@@ -1,0 +1,80 @@
+<!-- Modal -->
+<div class="modal fade" id="rolling-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">rolling period</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">            
+              <div class="col-2">
+                <span>from:</span>
+              </div>
+              <div class="col-10">
+                <div class="input-group">
+                  <span class="input-group-text">📅</span>
+                  <input id="modal-from" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row">            
+              <div class="col-2">
+                <span>to:</span>
+              </div>
+              <div class="col-10">
+                <div class="input-group">
+                  <span class="input-group-text">📅</span>
+                  <input id="modal-to" class="form-control">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="load_rolling" class="btn btn-primary">Load</button>          
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script>
+
+  stash["onload_subs"].push(function () {
+    flatpickr("#modal-from", { dateFormat: "Y-m-d" })
+  });
+
+  stash["onload_subs"].push(function () {
+    flatpickr("#modal-to", { dateFormat: "Y-m-d" })
+  });
+
+  function check_time_line( from, to ) {
+    let from_array = from.split("-");
+    let to_array = to.split("-");       
+    if( from_array[0] < to_array[0] ) { return( true ) }
+    if( from_array[1] < to_array[1] ) { return( true ) }
+    if( from_array[2] < to_array[2] ) { return( true ) }
+    alert("Check the dates");
+    return( false )
+  }
+
+  document.querySelector("#load_rolling").addEventListener("click", function() {
+    let from = document.querySelector( "#modal-from" ).value;
+    let to = document.querySelector( "#modal-to" ).value;
+    let time_line_ok = check_time_line( from, to );
+    if( time_line_ok == true ) {
+      url = sprintf(
+        "{{web}}/srv/gold/day/%s/%s/",
+        from, to
+      );      
+      bootstrap.Modal.getInstance(document.getElementById("rolling-modal")).hide();
+      location.replace(url);
+      return( false )
+    }
+    
+  });
+
+</script>

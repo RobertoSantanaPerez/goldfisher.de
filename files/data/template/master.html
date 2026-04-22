@@ -4,10 +4,7 @@
 <head>
     <script>
         const config = function () {
-            return ({
-		    "timeout_refresh": {{timeout_refresh}}
-        
-        	})
+            return({ "timeout_refresh": {{timeout_refresh}} })
         }
 
         let stash = {
@@ -41,6 +38,7 @@
     {% include "master/nav.html" %}
     {% include "master/day-modal.html" %}
     {% include "master/week-modal.html" %}
+    {% include "master/rolling-modal.html" %}
     {% include "master/register-modal.html" %}
     {% block header %}{% endblock %}
     {% block content %}{% endblock %}
