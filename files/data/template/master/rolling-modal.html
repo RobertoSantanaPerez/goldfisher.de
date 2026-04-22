@@ -16,7 +16,7 @@
               <div class="col-10">
                 <div class="input-group">
                   <span class="input-group-text">📅</span>
-                  <input id="modal-from" class="form-control">
+                  <input id="rolling-modal-from" class="form-control">
                 </div>
               </div>
             </div>
@@ -27,7 +27,7 @@
               <div class="col-10">
                 <div class="input-group">
                   <span class="input-group-text">📅</span>
-                  <input id="modal-to" class="form-control">
+                  <input id="rolling-modal-to" class="form-control">
                 </div>
               </div>
             </div>
@@ -44,11 +44,11 @@
 <script>
 
   stash["onload_subs"].push(function () {
-    flatpickr("#modal-from", { dateFormat: "Y-m-d" })
+    flatpickr("#rolling-modal-from", { dateFormat: "Y-m-d" })
   });
 
   stash["onload_subs"].push(function () {
-    flatpickr("#modal-to", { dateFormat: "Y-m-d" })
+    flatpickr("#rolling-modal-to", { dateFormat: "Y-m-d" })
   });
 
   function check_time_line( from, to ) {
@@ -62,14 +62,16 @@
   }
 
   document.querySelector("#load_rolling").addEventListener("click", function() {
-    let from = document.querySelector( "#modal-from" ).value;
-    let to = document.querySelector( "#modal-to" ).value;
-    let time_line_ok = check_time_line( from, to );
+    let from = document.querySelector( "#rolling-modal-from" );
+    let to = document.querySelector( "#rolling-modal-to" );
+    let time_line_ok = check_time_line( from.value, to.value );
     if( time_line_ok == true ) {
       url = sprintf(
         "{{web}}/srv/gold/day/%s/%s/",
-        from, to
-      );      
+        from.value, to.value
+      );  
+      from.value= "",
+      to.value= "",
       bootstrap.Modal.getInstance(document.getElementById("rolling-modal")).hide();
       location.replace(url);
       return( false )
