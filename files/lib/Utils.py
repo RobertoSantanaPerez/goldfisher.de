@@ -1,6 +1,6 @@
 ### begin-of-file
 
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from flask import g, request
 import time
 import lib.Output
@@ -25,6 +25,35 @@ def format_time( tme ):
     return( "{}:{}:{}".format(h, m, s) )
   except: print("format_time problems")
   return( None )
+
+def _get_week_day( nr ):
+  if nr == 0: return("Mo")
+  if nr == 1: return("Di")
+  if nr == 2: return("Mi")
+  if nr == 3: return("Do")
+  if nr == 4: return("Fr")
+  if nr == 5: return("Sa")
+  if nr == 6: return("So")    
+  return( None )
+#_get_week_day
+
+def get_week_day( day ):
+  day  = format_day( day )
+  day_nr = datetime.strptime( day, "%Y-%m-%d").weekday()
+  return( _get_week_day( day_nr) )
+
+def days_between_from_to( from_str, to_str ):
+  from_str = format_day(from_str)
+  to_str   = format_day(to_str)
+  start    = date.fromisoformat(from_str)
+  end      = date.fromisoformat(to_str)
+  dates = [
+    start + timedelta(days=i)
+    for i in range((end - start).days + 1)
+  ]
+  dates_str = [d.isoformat() for d in dates]
+  return( dates_str )
+#days_between_from_to
 
 def get_date_today():
   now = time.localtime()

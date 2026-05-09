@@ -98,13 +98,7 @@ def week( year, week ):
         g.output["year"] = year
         g.output["week"] = week
         return( out.html("gold-price-week") )    
-    elif "application/json" in lib.Utils.get_accept():
-        cache = lib.Cache.Cache( year + week )  
-        cache.kill()
-        cache_data = cache.read()
-        if( cache_data != None ):
-            return( out.json(cache_data) )
-        
+    elif "application/json" in lib.Utils.get_accept():      
         days = lib.Utils.days_from_week( year, week )
         day_list = []
         for day in days :
@@ -123,8 +117,40 @@ def week( year, week ):
                 "info"  : "data complete"
             }
         }
-        cache.write( data )    
         return( out.json(data) )
+    else: 
+        errorstr = "Route '/week/<year>/<week>/' Method 'GET' }"
+        app.logger.info( "HTTP Error: {}".format(errorstr) )
+        return( lib.Utils.error(400) )        
+# end week
+
+@gold.route( '/rolling-period/<from_str>/<to_str>/', methods=["GET"] )
+def rolling_period( from_str, to_str ):
+    if "text/html" in lib.Utils.get_accept():
+        g.output["from"] = from_str
+        g.output["to"]   = to_str
+        return( out.html("gold-price-rolling-period") )    
+    elif "application/json" in lib.Utils.get_accept():      
+        days = lib.Utils.days_between_from_to(from_str, to_str)        
+        day_list = []
+        show = 1;
+        for day in days :
+            (list_price, min, max, average)= lib.Gold.Gold().get_day_prices( day )            
+            day_list.append({
+                "day"  : lib.Utils.get_week_day(day) + " " + day,
+                "min"  : min,
+                "max"  : max,
+                "list" : list_price
+            })
+        data = {
+            "data" : {
+                "year"  : "",
+                "week"  : "",
+                "list"  : day_list,
+                "info"  : "data complete"
+            }
+        }
+        return( out.json(data) )        
     else: 
         errorstr = "Route '/week/<year>/<week>/' Method 'GET' }"
         app.logger.info( "HTTP Error: {}".format(errorstr) )

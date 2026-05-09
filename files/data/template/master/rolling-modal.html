@@ -67,7 +67,7 @@
     let time_line_ok = check_time_line( from.value, to.value );
     if( time_line_ok == true ) {
       url = sprintf(
-        "{{web}}/srv/gold/day/%s/%s/",
+        "{{web}}/srv/gold/rolling-period/%s/%s/",
         from.value, to.value
       );  
       from.value= "",
