@@ -56,9 +56,6 @@
         })
             .then((response) => response.json())
             .then(function (json) {
-
-                alert(JSON.stringify(json));
-
                 gold_price_present_init(json);
                 document.querySelector("#info").value = "data complete";
             })
