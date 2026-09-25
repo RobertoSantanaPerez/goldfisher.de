@@ -2,7 +2,7 @@
 - hosts: "{{ host_list }}"
   vars:
     project: "goldfisher.de"
-    remoteuser: kolyma
+    remoteuser: petschora
     gather_facts: yes
     ansible_python_interpreter: /usr/bin/python3
 
@@ -13,8 +13,8 @@
         path: "/home/{{ remoteuser }}/Workspace/{{ project }}"
         state: directory
 
-    - name: Project-Dir sichern
-      shell: cd /home/{{ remoteuser }}/Workspace && tar cfzv "/private-backup/server/local/{{ project }}_$(date +"%Y-%m-%d_%I-%M-%S").tar.gz" "{{ project }}"
+    #- name: Project-Dir sichern
+    #  shell: cd /home/{{ remoteuser }}/Workspace && tar cfzv "/private-backup/server/local/{{ project }}_$(date +"%Y-%m-%d_%I-%M-%S").tar.gz" "{{ project }}"
 
 
     - name: log-dir anlegen
